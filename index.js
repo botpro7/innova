@@ -56,7 +56,13 @@ fastify.register(async (fastifyInstance) => {
     console.info("[Server] Twilio connected to media stream.");
 
     let streamSid = null;
-
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    
+    const fechaFormateada = `${yyyy}-${mm}-${dd}`;
+    
     // Connect to ElevenLabs Conversational AI WebSocket
     const elevenLabsWs = new WebSocket(
       `wss://api.elevenlabs.io/v1/convai/conversation?agent_id=${ELEVENLABS_AGENT_ID}`
@@ -69,8 +75,8 @@ fastify.register(async (fastifyInstance) => {
           const initialConfig = {
             type: 'conversation_initiation_client_data',
             dynamic_variables: {
-                called_number: PHONE
-
+                called_number: PHONE,
+                today: fechaFormateada
           }};
 
           console.log(
